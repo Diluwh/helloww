@@ -1,0 +1,65 @@
+import React, { useState, useEffect } from 'react';
+import { Card } from '@/components/ui/card';
+import { Globe, Heart } from 'lucide-react';
+
+const HelloWorld = () => {
+  const [greeting, setGreeting] = useState('Hello World!');
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [likes, setLikes] = useState(0);
+
+  const greetings = [
+    { text: 'Hello World!', language: 'English' },
+    { text: 'ආයුබෝවන්!', language: 'සිංහල' },
+    { text: 'こんにちは世界!', language: '日本語' },
+    { text: 'Bonjour le monde!', language: 'Français' }
+  ];
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const changeGreeting = () => {
+    setIsAnimating(true);
+    setCurrentIndex((prev) => (prev + 1) % greetings.length);
+    setTimeout(() => setIsAnimating(false), 500);
+  };
+
+  const handleLike = () => {
+    setLikes(prev => prev + 1);
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-r from-pink-500 to-cyan-500 flex items-center justify-center p-4">
+      <Card className="w-full max-w-md p-6 backdrop-blur-lg bg-white/10">
+        <div className="text-center space-y-6">
+          <div className="flex justify-center">
+            <Globe className="w-12 h-12 text-white animate-spin-slow" />
+          </div>
+          
+          <h1 
+            className={`text-4xl md:text-6xl font-bold text-white cursor-pointer
+              ${isAnimating ? 'animate-bounce' : ''}`}
+            onClick={changeGreeting}
+          >
+            {greetings[currentIndex].text}
+          </h1>
+          
+          <p className="text-white/80 text-lg">
+            {greetings[currentIndex].language}
+          </p>
+          
+          <div className="flex items-center justify-center space-x-2">
+            <button
+              onClick={handleLike}
+              className="flex items-center space-x-2 px-4 py-2 rounded-full
+                bg-white/20 hover:bg-white/30 transition-all duration-300"
+            >
+              <Heart className={`w-5 h-5 ${likes > 0 ? 'text-red-500 fill-red-500' : 'text-white'}`} />
+              <span className="text-white">{likes}</span>
+            </button>
+          </div>
+        </div>
+      </Card>
+    </div>
+  );
+};
+
+export default HelloWorld;
